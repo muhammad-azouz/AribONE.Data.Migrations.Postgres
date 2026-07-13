@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Holds the PostgreSQL EF Core migration set and its own Postgres-flavored
+       model snapshot for AribContext. EF keeps one model snapshot per context per
+       assembly, so the Postgres migrations cannot share AribONE.Data/Migrations
+       (which stays SQL-Server-only). The gateway references this project and points
+       Npgsql's MigrationsAssembly at it when DB_PROVIDER=postgres. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>AribONE.Data.Migrations.Postgres</RootNamespace>
+    <AssemblyName>AribONE.Data.Migrations.Postgres</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../AribONE.Data/AribONE.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
