@@ -3,6 +3,7 @@ using System;
 using AribONE.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AribONE.Data.Migrations.Postgres.Migrations
 {
     [DbContext(typeof(AribContext))]
-    partial class AribContextModelSnapshot : ModelSnapshot
+    [Migration("20260718135711_SyncRenamedAccountingTables")]
+    partial class SyncRenamedAccountingTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -6089,50 +6092,6 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AribONE.Models.Entities.FiscalYear", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("ClosedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid?>("ClosedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ClosingRegNum")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<decimal>("NetProfit")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("numeric(18,2)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("StartDate", "EndDate")
-                        .IsUnique();
-
-                    b.ToTable("FiscalYears", t =>
-                        {
-                            t.HasTrigger("FiscalYears_dms_sync");
-                        });
-                });
-
             modelBuilder.Entity("AribONE.Models.Entities.GeneralLedgerEntry", b =>
                 {
                     b.Property<Guid>("Id")
@@ -7738,24 +7697,6 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                             Id = new Guid("00000003-0000-7000-a000-000000000049"),
                             Description = "يمكنه تسجيل حركات نقدية من خزنة الفرع مباشرة بدلاً من درج الكاشير",
                             Name = "التعامل مع نقدية الخزنة الرئيسية"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000003-0000-7000-a000-000000000050"),
-                            Description = "يمكنه إعداد وإعادة تشكيل تسلسل السنوات المالية",
-                            Name = "ادارة السنوات المالية"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000003-0000-7000-a000-000000000051"),
-                            Description = "يمكنه إغلاق سنة مالية",
-                            Name = "اغلاق السنة المالية"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000003-0000-7000-a000-000000000052"),
-                            Description = "يمكنه إعادة فتح آخر سنة مالية مغلقة",
-                            Name = "اعادة فتح السنة المالية"
                         });
                 });
 
@@ -7974,13 +7915,6 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                             AccountId = new Guid("00000001-0000-7000-a000-000000000035"),
                             LabelAr = "عهد الموظفين",
                             LabelEn = "Pledge"
-                        },
-                        new
-                        {
-                            Role = "RetainedEarnings",
-                            AccountId = new Guid("00000001-0000-7000-a000-000000000129"),
-                            LabelAr = "أرباح (خسائر) مرحلة",
-                            LabelEn = "Retained Earnings"
                         },
                         new
                         {
@@ -8696,24 +8630,6 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         {
                             Id = new Guid("00000004-0000-7000-a000-000000000078"),
                             PermissionId = new Guid("00000003-0000-7000-a000-000000000049"),
-                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
-                        },
-                        new
-                        {
-                            Id = new Guid("00000004-0000-7000-a000-000000000080"),
-                            PermissionId = new Guid("00000003-0000-7000-a000-000000000050"),
-                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
-                        },
-                        new
-                        {
-                            Id = new Guid("00000004-0000-7000-a000-000000000081"),
-                            PermissionId = new Guid("00000003-0000-7000-a000-000000000051"),
-                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
-                        },
-                        new
-                        {
-                            Id = new Guid("00000004-0000-7000-a000-000000000082"),
-                            PermissionId = new Guid("00000003-0000-7000-a000-000000000052"),
                             RoleId = new Guid("00000002-0000-7000-a000-000000000001")
                         },
                         new
