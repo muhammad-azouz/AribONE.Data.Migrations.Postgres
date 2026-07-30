@@ -8996,6 +8996,175 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AribONE.Models.Entities.StockTransfer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CancelledAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("CancelledByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("DispatchRegNum")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DispatchedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("DispatchedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FromBranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FromWarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ItemCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Num")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("ReceiptRegNum")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ReceivedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("ReceivedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ToBranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ToWarehouseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CancelledByUserId");
+
+                    b.HasIndex("DispatchedByUserId");
+
+                    b.HasIndex("FromBranchId");
+
+                    b.HasIndex("FromWarehouseId");
+
+                    b.HasIndex("ReceivedByUserId");
+
+                    b.HasIndex("ToWarehouseId");
+
+                    b.HasIndex("ToBranchId", "Status");
+
+                    b.ToTable("StockTransfers", t =>
+                        {
+                            t.HasTrigger("StockTransfers_dms_sync");
+                        });
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.StockTransferLayer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("BatchNumber")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("FromBranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<Guid?>("SourceBatchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("StockTransferLineId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ToBranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("UnitCost")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("numeric(18,4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StockTransferLineId");
+
+                    b.ToTable("StockTransferLayers", t =>
+                        {
+                            t.HasTrigger("StockTransferLayers_dms_sync");
+                        });
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.StockTransferLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FromBranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<decimal?>("ReceivedQty")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<Guid>("StockTransferId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ToBranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("UnitCost")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("numeric(18,4)");
+
+                    b.Property<Guid>("UnitId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StockTransferId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("StockTransferLines", t =>
+                        {
+                            t.HasTrigger("StockTransferLines_dms_sync");
+                        });
+                });
+
             modelBuilder.Entity("AribONE.Models.Entities.Treasury", b =>
                 {
                     b.Property<Guid>("Id")
@@ -10158,6 +10327,85 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Navigation("OpenedByUser");
                 });
 
+            modelBuilder.Entity("AribONE.Models.Entities.StockTransfer", b =>
+                {
+                    b.HasOne("AribONE.Models.Entities.User", "CancelledByUser")
+                        .WithMany()
+                        .HasForeignKey("CancelledByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AribONE.Models.Entities.User", "DispatchedByUser")
+                        .WithMany()
+                        .HasForeignKey("DispatchedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.Branch", "FromBranch")
+                        .WithMany()
+                        .HasForeignKey("FromBranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.User", "ReceivedByUser")
+                        .WithMany()
+                        .HasForeignKey("ReceivedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AribONE.Models.Entities.Branch", "ToBranch")
+                        .WithMany()
+                        .HasForeignKey("ToBranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CancelledByUser");
+
+                    b.Navigation("DispatchedByUser");
+
+                    b.Navigation("FromBranch");
+
+                    b.Navigation("ReceivedByUser");
+
+                    b.Navigation("ToBranch");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.StockTransferLayer", b =>
+                {
+                    b.HasOne("AribONE.Models.Entities.StockTransferLine", "StockTransferLine")
+                        .WithMany("Layers")
+                        .HasForeignKey("StockTransferLineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StockTransferLine");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.StockTransferLine", b =>
+                {
+                    b.HasOne("AribONE.Models.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.StockTransfer", "StockTransfer")
+                        .WithMany("Lines")
+                        .HasForeignKey("StockTransferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.UnitOfMeasure", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("StockTransfer");
+
+                    b.Navigation("Unit");
+                });
+
             modelBuilder.Entity("AribONE.Models.Entities.Treasury", b =>
                 {
                     b.HasOne("AribONE.Models.Entities.Branch", "Branch")
@@ -10340,6 +10588,16 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Navigation("RolePermissions");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.StockTransfer", b =>
+                {
+                    b.Navigation("Lines");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.StockTransferLine", b =>
+                {
+                    b.Navigation("Layers");
                 });
 
             modelBuilder.Entity("AribONE.Models.Entities.UnitOfMeasure", b =>
