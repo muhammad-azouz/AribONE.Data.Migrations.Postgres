@@ -8345,6 +8345,42 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AribONE.Models.Entities.PurchaseLineReturn", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("PurchaseLineId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PurchaseReturnLineId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("PurchaseLineId");
+
+                    b.HasIndex("PurchaseReturnLineId");
+
+                    b.ToTable("PurchaseLineReturns", t =>
+                        {
+                            t.HasTrigger("PurchaseLineReturns_dms_sync");
+                        });
+                });
+
             modelBuilder.Entity("AribONE.Models.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -10326,6 +10362,33 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.PurchaseLineReturn", b =>
+                {
+                    b.HasOne("AribONE.Models.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.PurchaseLine", "PurchaseLine")
+                        .WithMany()
+                        .HasForeignKey("PurchaseLineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.PurchaseReturnLine", "PurchaseReturnLine")
+                        .WithMany()
+                        .HasForeignKey("PurchaseReturnLineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("PurchaseLine");
+
+                    b.Navigation("PurchaseReturnLine");
                 });
 
             modelBuilder.Entity("AribONE.Models.Entities.RolePermission", b =>
