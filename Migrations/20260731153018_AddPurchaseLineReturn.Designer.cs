@@ -3,6 +3,7 @@ using System;
 using AribONE.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AribONE.Data.Migrations.Postgres.Migrations
 {
     [DbContext(typeof(AribContext))]
-    partial class AribContextModelSnapshot : ModelSnapshot
+    [Migration("20260731153018_AddPurchaseLineReturn")]
+    partial class AddPurchaseLineReturn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -8375,10 +8378,7 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
 
                     b.HasIndex("PurchaseReturnLineId");
 
-                    b.ToTable("PurchaseLineReturns", t =>
-                        {
-                            t.HasTrigger("PurchaseLineReturns_dms_sync");
-                        });
+                    b.ToTable("PurchaseLineReturns");
                 });
 
             modelBuilder.Entity("AribONE.Models.Entities.Role", b =>
