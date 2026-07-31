@@ -6758,6 +6758,9 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("character varying(16)");
 
+                    b.Property<Guid?>("OriginalInvoiceId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("PaidDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -8902,6 +8905,42 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AribONE.Models.Entities.SaleLineReturn", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<Guid>("SaleLineId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SalesReturnLineId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("SaleLineId");
+
+                    b.HasIndex("SalesReturnLineId");
+
+                    b.ToTable("SaleLineReturns", t =>
+                        {
+                            t.HasTrigger("SaleLineReturns_dms_sync");
+                        });
+                });
+
             modelBuilder.Entity("AribONE.Models.Entities.Shift", b =>
                 {
                     b.Property<Guid>("Id")
@@ -10306,6 +10345,33 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Navigation("Permission");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.SaleLineReturn", b =>
+                {
+                    b.HasOne("AribONE.Models.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.SaleLine", "SaleLine")
+                        .WithMany()
+                        .HasForeignKey("SaleLineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.SalesReturnLine", "SalesReturnLine")
+                        .WithMany()
+                        .HasForeignKey("SalesReturnLineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("SaleLine");
+
+                    b.Navigation("SalesReturnLine");
                 });
 
             modelBuilder.Entity("AribONE.Models.Entities.Shift", b =>
