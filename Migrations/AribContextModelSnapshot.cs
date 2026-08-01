@@ -6177,8 +6177,8 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
 
                     b.Property<string>("Ship")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
