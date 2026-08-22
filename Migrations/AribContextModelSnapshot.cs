@@ -5703,6 +5703,10 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uuid");
 
+                    b.Property<decimal?>("DefaultDeliveryFee")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
                     b.Property<bool>("DynamicBalanceModeEnabled")
                         .HasColumnType("boolean");
 
@@ -5810,6 +5814,49 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("AribONE.Models.Entities.Courier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("BranchId", "IsActive");
+
+                    b.ToTable("Couriers", t =>
+                        {
+                            t.HasTrigger("Couriers_dms_sync");
+                        });
+                });
+
             modelBuilder.Entity("AribONE.Models.Entities.Currency", b =>
                 {
                     b.Property<Guid>("Id")
@@ -5863,6 +5910,35 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                             EnglishName = "Saudi Riyal",
                             IsDefault = false,
                             Value = 1m
+                        });
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.DeliveryTariff", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AreaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Fee")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("BranchId", "AreaId")
+                        .IsUnique();
+
+                    b.ToTable("DeliveryTariffs", t =>
+                        {
+                            t.HasTrigger("DeliveryTariffs_dms_sync");
                         });
                 });
 
@@ -7184,6 +7260,9 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("character varying(12)");
 
+                    b.Property<Guid?>("CourierId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("CourierName")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
@@ -7207,6 +7286,19 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
 
                     b.Property<DateTime?>("DueAt")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("FailedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("FailedByCourierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("FailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FailedReason")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<int>("ItemCount")
                         .HasColumnType("integer");
@@ -7248,6 +7340,10 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AcceptedByUserId");
+
+                    b.HasIndex("CourierId");
+
+                    b.HasIndex("FailedByCourierId");
 
                     b.HasIndex("PartnerId");
 
@@ -7360,6 +7456,10 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasColumnType("numeric(18,2)");
 
                     b.Property<decimal>("Debit")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal?>("DeliveryFee")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
@@ -7953,6 +8053,12 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                             Id = new Guid("00000003-0000-7000-a000-000000000055"),
                             Description = "يمكنه تحويل الطلب إلى فرع آخر",
                             Name = "تحويل الطلب"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000003-0000-7000-a000-000000000056"),
+                            Description = "يمكنه إدارة المندوبين وتعريفة التوصيل",
+                            Name = "ادارة المندوبين"
                         });
                 });
 
@@ -9000,6 +9106,12 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         {
                             Id = new Guid("00000004-0000-7000-a000-000000000083"),
                             PermissionId = new Guid("00000003-0000-7000-a000-000000000055"),
+                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000004-0000-7000-a000-000000000084"),
+                            PermissionId = new Guid("00000003-0000-7000-a000-000000000056"),
                             RoleId = new Guid("00000002-0000-7000-a000-000000000001")
                         },
                         new
@@ -10113,6 +10225,43 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Navigation("Logo");
                 });
 
+            modelBuilder.Entity("AribONE.Models.Entities.Courier", b =>
+                {
+                    b.HasOne("AribONE.Models.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.DeliveryTariff", b =>
+                {
+                    b.HasOne("AribONE.Models.Entities.Area", "Area")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Area");
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("AribONE.Models.Entities.DocumentAuditEntry", b =>
                 {
                     b.HasOne("AribONE.Models.Entities.Branch", "Branch")
@@ -10470,6 +10619,16 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("AribONE.Models.Entities.Courier", "Courier")
+                        .WithMany()
+                        .HasForeignKey("CourierId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AribONE.Models.Entities.Courier", "FailedByCourier")
+                        .WithMany()
+                        .HasForeignKey("FailedByCourierId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("AribONE.Models.Entities.Partner", "Partner")
                         .WithMany()
                         .HasForeignKey("PartnerId")
@@ -10485,6 +10644,10 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Navigation("AcceptedByUser");
 
                     b.Navigation("Branch");
+
+                    b.Navigation("Courier");
+
+                    b.Navigation("FailedByCourier");
 
                     b.Navigation("Partner");
 
