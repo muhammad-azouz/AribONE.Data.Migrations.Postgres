@@ -7054,8 +7054,8 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<decimal>("ItemCost")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("numeric(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("numeric(18,4)");
 
                     b.Property<int>("Num")
                         .HasColumnType("integer");
@@ -7071,8 +7071,8 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Qty")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("numeric(18,2)");
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
 
                     b.Property<Guid>("RegNum")
                         .HasColumnType("uuid");
@@ -7086,8 +7086,8 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasColumnType("numeric(18,2)");
 
                     b.Property<decimal>("TotalQty")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("numeric(18,2)");
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
 
                     b.Property<Guid>("UnitId")
                         .HasColumnType("uuid");
