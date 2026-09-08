@@ -3,6 +3,7 @@ using System;
 using AribONE.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AribONE.Data.Migrations.Postgres.Migrations
 {
     [DbContext(typeof(AribContext))]
-    partial class AribContextModelSnapshot : ModelSnapshot
+    [Migration("20260830103309_AddAribLinkGateway")]
+    partial class AddAribLinkGateway
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -8065,18 +8068,6 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                             Id = new Guid("00000003-0000-7000-a000-000000000057"),
                             Description = "يمكنه إدارة الأجهزة الطرفية ومقاعدها",
                             Name = "ادارة الأجهزة الطرفية"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000003-0000-7000-a000-000000000058"),
-                            Description = "يمكنه رؤية العملاء في قوائم اختيار العملاء والموردين",
-                            Name = "التعامل مع العملاء"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000003-0000-7000-a000-000000000059"),
-                            Description = "يمكنه رؤية الموردين في قوائم اختيار العملاء والموردين",
-                            Name = "التعامل مع الموردين"
                         });
                 });
 
@@ -9282,18 +9273,6 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         {
                             Id = new Guid("00000004-0000-7000-a000-000000000085"),
                             PermissionId = new Guid("00000003-0000-7000-a000-000000000057"),
-                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
-                        },
-                        new
-                        {
-                            Id = new Guid("00000004-0000-7000-a000-000000000086"),
-                            PermissionId = new Guid("00000003-0000-7000-a000-000000000058"),
-                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
-                        },
-                        new
-                        {
-                            Id = new Guid("00000004-0000-7000-a000-000000000087"),
-                            PermissionId = new Guid("00000003-0000-7000-a000-000000000059"),
                             RoleId = new Guid("00000002-0000-7000-a000-000000000001")
                         },
                         new
