@@ -8059,6 +8059,24 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                             Id = new Guid("00000003-0000-7000-a000-000000000056"),
                             Description = "يمكنه إدارة المندوبين وتعريفة التوصيل",
                             Name = "ادارة المندوبين"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000003-0000-7000-a000-000000000057"),
+                            Description = "يمكنه إدارة الأجهزة الطرفية ومقاعدها",
+                            Name = "ادارة الأجهزة الطرفية"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000003-0000-7000-a000-000000000058"),
+                            Description = "يمكنه رؤية العملاء في قوائم اختيار العملاء والموردين",
+                            Name = "التعامل مع العملاء"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000003-0000-7000-a000-000000000059"),
+                            Description = "يمكنه رؤية الموردين في قوائم اختيار العملاء والموردين",
+                            Name = "التعامل مع الموردين"
                         });
                 });
 
@@ -8404,6 +8422,11 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("AllowsFractionalQty")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -9257,6 +9280,24 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         },
                         new
                         {
+                            Id = new Guid("00000004-0000-7000-a000-000000000085"),
+                            PermissionId = new Guid("00000003-0000-7000-a000-000000000057"),
+                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000004-0000-7000-a000-000000000086"),
+                            PermissionId = new Guid("00000003-0000-7000-a000-000000000058"),
+                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000004-0000-7000-a000-000000000087"),
+                            PermissionId = new Guid("00000003-0000-7000-a000-000000000059"),
+                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
+                        },
+                        new
+                        {
                             Id = new Guid("00000004-0000-7000-a000-000000000001"),
                             PermissionId = new Guid("00000003-0000-7000-a000-000000000001"),
                             RoleId = new Guid("00000002-0000-7000-a000-000000000002")
@@ -9736,6 +9777,151 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AribONE.Models.Entities.TerminalOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ClientRequestId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ItemCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<Guid?>("SaleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("SectionId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("SectionName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TerminalId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("TicketCode")
+                        .IsRequired()
+                        .HasMaxLength(24)
+                        .HasColumnType("character varying(24)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("BranchId", "TicketCode")
+                        .IsUnique();
+
+                    b.HasIndex("TerminalId", "ClientRequestId")
+                        .IsUnique();
+
+                    b.HasIndex("BranchId", "Status", "CreatedAt");
+
+                    b.ToTable("TerminalOrders");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.TerminalOrderLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("AddedBySectionId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("AddedBySectionName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("AddedByTerminalId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<Guid>("AddedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CategoryName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<decimal>("LineTotal")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<Guid>("TerminalOrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UnitName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddedByUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("TerminalOrderId");
+
+                    b.ToTable("TerminalOrderLines");
+                });
+
             modelBuilder.Entity("AribONE.Models.Entities.Treasury", b =>
                 {
                     b.Property<Guid>("Id")
@@ -9984,6 +10170,16 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("PinFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PinHash")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime?>("PinLockedUntil")
+                        .HasColumnType("timestamp without time zone");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users", t =>
@@ -10001,7 +10197,8 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                             IsActive = true,
                             LoginName = "admin",
                             Name = "admin",
-                            PasswordHash = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg="
+                            PasswordHash = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
+                            PinFailedCount = 0
                         });
                 });
 
@@ -11192,6 +11389,52 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Navigation("Unit");
                 });
 
+            modelBuilder.Entity("AribONE.Models.Entities.TerminalOrder", b =>
+                {
+                    b.HasOne("AribONE.Models.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("CreatedByUser");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.TerminalOrderLine", b =>
+                {
+                    b.HasOne("AribONE.Models.Entities.User", "AddedByUser")
+                        .WithMany()
+                        .HasForeignKey("AddedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AribONE.Models.Entities.TerminalOrder", "TerminalOrder")
+                        .WithMany("Lines")
+                        .HasForeignKey("TerminalOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AddedByUser");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("TerminalOrder");
+                });
+
             modelBuilder.Entity("AribONE.Models.Entities.Treasury", b =>
                 {
                     b.HasOne("AribONE.Models.Entities.Branch", "Branch")
@@ -11394,6 +11637,11 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
             modelBuilder.Entity("AribONE.Models.Entities.StockTransferLine", b =>
                 {
                     b.Navigation("Layers");
+                });
+
+            modelBuilder.Entity("AribONE.Models.Entities.TerminalOrder", b =>
+                {
+                    b.Navigation("Lines");
                 });
 
             modelBuilder.Entity("AribONE.Models.Entities.UnitOfMeasure", b =>
