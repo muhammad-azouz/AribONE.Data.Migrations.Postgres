@@ -8077,6 +8077,12 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                             Id = new Guid("00000003-0000-7000-a000-000000000059"),
                             Description = "يمكنه رؤية الموردين في قوائم اختيار العملاء والموردين",
                             Name = "التعامل مع الموردين"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000003-0000-7000-a000-000000000060"),
+                            Description = "يمكنه حذف الفواتير والسندات النقدية وسندات الإيرادات والمصروفات",
+                            Name = "حذف المستندات"
                         });
                 });
 
@@ -9294,6 +9300,12 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         {
                             Id = new Guid("00000004-0000-7000-a000-000000000087"),
                             PermissionId = new Guid("00000003-0000-7000-a000-000000000059"),
+                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000004-0000-7000-a000-000000000088"),
+                            PermissionId = new Guid("00000003-0000-7000-a000-000000000060"),
                             RoleId = new Guid("00000002-0000-7000-a000-000000000001")
                         },
                         new
