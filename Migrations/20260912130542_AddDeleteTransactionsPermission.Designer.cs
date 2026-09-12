@@ -3,6 +3,7 @@ using System;
 using AribONE.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AribONE.Data.Migrations.Postgres.Migrations
 {
     [DbContext(typeof(AribContext))]
-    partial class AribContextModelSnapshot : ModelSnapshot
+    [Migration("20260912130542_AddDeleteTransactionsPermission")]
+    partial class AddDeleteTransactionsPermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
