@@ -6855,6 +6855,12 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int?>("DailyNum")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly?>("DailyNumDate")
+                        .HasColumnType("date");
+
                     b.Property<decimal?>("EndingBalance")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
@@ -7002,6 +7008,9 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.HasIndex("UserId");
 
                     b.HasIndex("BranchId", "Num");
+
+                    b.HasIndex("BranchId", "DailyNumDate", "DailyNum")
+                        .IsUnique();
 
                     b.ToTable("Invoices", t =>
                         {
