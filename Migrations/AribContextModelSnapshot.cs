@@ -7303,7 +7303,9 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("FailedCount")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("FailedReason")
                         .HasMaxLength(200)
@@ -8473,7 +8475,9 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("ProductCode")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("ProductKind")
                         .HasColumnType("integer");
@@ -10192,7 +10196,9 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("PinFailedCount")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("PinHash")
                         .HasMaxLength(200)
