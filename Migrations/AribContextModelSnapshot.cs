@@ -8887,6 +8887,9 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.Property<Guid>("FulfilledByUserId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("PurchaseLineId")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal>("Qty")
                         .HasPrecision(18, 3)
                         .HasColumnType("numeric(18,3)");
@@ -8906,6 +8909,8 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
+
+                    b.HasIndex("PurchaseLineId");
 
                     b.HasIndex("ReservationLineId");
 
@@ -10526,6 +10531,13 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                     b.HasDiscriminator().HasValue("ReSaleEntry");
                 });
 
+            modelBuilder.Entity("AribONE.Models.Entities.PurchaseReservation", b =>
+                {
+                    b.HasBaseType("AribONE.Models.Entities.Reservation");
+
+                    b.HasDiscriminator().HasValue(301);
+                });
+
             modelBuilder.Entity("AribONE.Models.Entities.BankAccount", b =>
                 {
                     b.HasOne("AribONE.Models.Entities.Account", "Account")
@@ -11273,6 +11285,10 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("AribONE.Models.Entities.PurchaseLine", "PurchaseLine")
+                        .WithMany()
+                        .HasForeignKey("PurchaseLineId");
+
                     b.HasOne("AribONE.Models.Entities.ReservationLine", "ReservationLine")
                         .WithMany("Fulfillments")
                         .HasForeignKey("ReservationLineId")
@@ -11288,6 +11304,8 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         .HasForeignKey("SalesReturnLineId");
 
                     b.Navigation("Branch");
+
+                    b.Navigation("PurchaseLine");
 
                     b.Navigation("ReservationLine");
 
