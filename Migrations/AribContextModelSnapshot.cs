@@ -8106,6 +8106,12 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                             Id = new Guid("00000003-0000-7000-a000-000000000062"),
                             Description = "يمكنه بيع الفواتير آجلاً للعملاء (ترك مبلغ متبقي على حساب العميل)، وبدونها يجب سداد الفاتورة بالكامل",
                             Name = "البيع الآجل"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000003-0000-7000-a000-000000000063"),
+                            Description = "يمكنه ربط رقم WhatsApp الخاص بالمحل بالبرنامج أو إلغاء ربطه",
+                            Name = "إدارة ربط WhatsApp"
                         });
                 });
 
@@ -9348,6 +9354,12 @@ namespace AribONE.Data.Migrations.Postgres.Migrations
                         {
                             Id = new Guid("00000004-0000-7000-a000-000000000090"),
                             PermissionId = new Guid("00000003-0000-7000-a000-000000000062"),
+                            RoleId = new Guid("00000002-0000-7000-a000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000004-0000-7000-a000-000000000091"),
+                            PermissionId = new Guid("00000003-0000-7000-a000-000000000063"),
                             RoleId = new Guid("00000002-0000-7000-a000-000000000001")
                         },
                         new
